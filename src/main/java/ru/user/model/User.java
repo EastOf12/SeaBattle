@@ -18,11 +18,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private UserStatus status;
-
-    public User(String name, UserStatus status) {
+    public User(String name) {
         this.name = name;
-        this.status = status;
     }
 }

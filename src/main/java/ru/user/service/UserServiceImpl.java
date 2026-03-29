@@ -45,19 +45,6 @@ public class UserServiceImpl implements UserService{
             user.setName(updateUserRequest.getName());
         }
 
-        //Обновляем статус
-        String updateStatus = updateUserRequest.getStatus();
-        if(!updateStatus.isEmpty()) {
-            UserStatus status;
-            try {
-                status = UserStatus.valueOf(updateUserRequest.getStatus());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid user status: " + updateStatus);
-            }
-
-            user.setStatus(status);
-        }
-
         //Обновляем пользователя в БД и возвращаем ответ
         return UserMapper.toUserDto(userRepository.save(user));
     }

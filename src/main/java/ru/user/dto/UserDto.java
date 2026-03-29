@@ -11,5 +11,4 @@ import ru.user.model.UserStatus;
 public class UserDto {
     private Long id;
     private String name;
-    private UserStatus status;
 }

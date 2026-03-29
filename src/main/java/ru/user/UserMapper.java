@@ -11,23 +11,20 @@ public class UserMapper {
     public UserDto toUserDto(User user) {
         return new UserDto(
                 user.getId(),
-                user.getName(),
-                user.getStatus()
+                user.getName()
         );
     }
 
     public User toUser(NewUserRequest newUserRequest) {
         return new User(
-                newUserRequest.getName(),
-                UserStatus.INACTIVE
+                newUserRequest.getName()
         );
     }
 
     public User toUser(UserDto userDto) {
         return new User(
                 userDto.getId(),
-                userDto.getName(),
-                userDto.getStatus()
+                userDto.getName()
         );
     }
 }

@@ -12,15 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/queue");
+        config.enableSimpleBroker("/topic", "/queue"); // Создаем простой брокер сообщений
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Точка входа для клиентов. URL: ws://localhost:8080/ws
-        registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*") // Разрешаем подключения отовсюду (для теста)
-                .withSockJS(); // Поддержка SockJS (fallback)
+        registry.addEndpoint("/ws") //URL: sea-battle://localhost:8080/sea-battle
+                .setAllowedOriginPatterns("*") ;// Только для теста, подключиться может кто угодно
+//                .withSockJS(); // Поддержка SockJS (fallback) Для теста в postman нужно закомментировать
     }
 }
