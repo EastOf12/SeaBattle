@@ -13,7 +13,9 @@ public class SessionMapper {
                 session.getOtherUser().getName(),
                 session.getUserMapJson(),
                 session.getOtherUserMapJson(),
-                session.getCreatedAt() != null ? session.getCreatedAt().toString() : null
+                session.getCreatedAt() != null ? session.getCreatedAt().toString() : null,
+                session.getUserWalkId(),
+                session.getStatus()
         );
     }
 }

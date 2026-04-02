@@ -1,5 +1,6 @@
 package ru.session.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class SessionDto {
     private String userMapJson;
     private String otherUserMapJson;
     private String createdAt;
+    private Long userWalkId;
+    private String status;
 }

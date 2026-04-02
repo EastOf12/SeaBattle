@@ -1,4 +1,4 @@
-package ru.search;
+package ru.search.dto;
 
 public enum SearchMessageType {
     GAME_FOUND,

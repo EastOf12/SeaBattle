@@ -1,13 +1,11 @@
-package ru.session;
+package ru.session.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.session.dto.SessionDto;
-import ru.session.model.Session;
 import ru.session.service.SessionService;
 
 import java.util.List;

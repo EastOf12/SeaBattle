@@ -1,11 +1,14 @@
 package ru.session.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import lombok.*;
+import ru.session.SessionStatus;
 import ru.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Entity
@@ -35,19 +38,32 @@ public class Session {
     private String otherUserMapJson;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "current_turn_user_id")
+    private Long userWalkId;
+
+    @Column(name = "status")
+    private String status = String.valueOf(SessionStatus.LOBBY);
+
+    @Column(name = "winner_id")
+    private Long winnerId;
 
     public Session(User user, User otherUser) {
         this.user = user;
         this.otherUser = otherUser;
-        initializeMaps();
+        initialize();
     }
 
-    //Инициализация пустых карт
-    private void initializeMaps() {
+    //Инициализация сессии
+    private void initialize() {
         int[][] emptyMap = new int[10][10];
         setUserMap(emptyMap);
         setOtherUserMap(emptyMap);
+
+        // 🔥 Случайно выбираем, кто ходит первым: 50/50
+        boolean userGoesFirst = new Random().nextBoolean();
+        this.userWalkId = userGoesFirst ? user.getId() : otherUser.getId();
     }
 
     //Конвертер: int[][] → JSON String
@@ -64,18 +80,12 @@ public class Session {
         if (userMapJson == null || userMapJson.isEmpty()) {
             return new int[10][10];
         }
-
-        String[] rows = userMapJson.replaceAll("^\\[|\\]$", "").split("\\],\\[");
-        int[][] map = new int[rows.length][];
-
-        for (int i = 0; i < rows.length; i++) {
-            String[] values = rows[i].split(",");
-            map[i] = new int[values.length];
-            for (int j = 0; j < values.length; j++) {
-                map[i][j] = Integer.parseInt(values[j]);
-            }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(userMapJson, int[][].class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse userMapJson", e);
         }
-        return map;
     }
 
     //Конвертер: int[][] → JSON String
@@ -92,17 +102,16 @@ public class Session {
         if (otherUserMapJson == null || otherUserMapJson.isEmpty()) {
             return new int[10][10];
         }
-
-        String[] rows = otherUserMapJson.replaceAll("^\\[|\\]$", "").split("\\],\\[");
-        int[][] map = new int[rows.length][];
-
-        for (int i = 0; i < rows.length; i++) {
-            String[] values = rows[i].split(",");
-            map[i] = new int[values.length];
-            for (int j = 0; j < values.length; j++) {
-                map[i][j] = Integer.parseInt(values[j]);
-            }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(otherUserMapJson, int[][].class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse otherUserMapJson", e);
         }
-        return map;
+    }
+
+    // Меняем очередность хода
+    public void switchTurn() {
+        userWalkId = userWalkId.equals(user.getId()) ? otherUser.getId() : user.getId();
     }
 }
