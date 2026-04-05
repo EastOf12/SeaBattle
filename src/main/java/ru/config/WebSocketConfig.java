@@ -18,8 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") //URL: sea-battle://localhost:8080/sea-battle
-                .setAllowedOriginPatterns("*") ;// Только для теста, подключиться может кто угодно
-//                .withSockJS(); // Поддержка SockJS (fallback) Для теста в postman нужно закомментировать
+        registry.addEndpoint("/ws") // URL: sea-battle://localhost:8080/sea-battle
+                .setAllowedOriginPatterns("*");
     }
 }
